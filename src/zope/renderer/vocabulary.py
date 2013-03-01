@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2003 Zope Foundation and Contributors.
+# Copyright (c) 2002 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,17 +11,17 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Renderer Tests
+"""Vocabulary for the Source Type Registry
 """
-import unittest
-from zope.testing.doctestunit import DocTestSuite
+import zope.component
+from zope.interface import alsoProvides
+from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
+from zope.schema.interfaces import IVocabularyFactory
+from zope.renderer.interfaces import ISource
 
-def test_suite():
-    return unittest.TestSuite((
-        DocTestSuite('zope.app.renderer.plaintext'),
-        DocTestSuite('zope.app.renderer.rest'),
-        DocTestSuite('zope.app.renderer.stx'),
-        ))
+def SourceTypeVocabulary(context):
+    return SimpleVocabulary(
+        [SimpleTerm(name, title=factory.title) for name, factory in 
+         zope.component.getFactoriesFor(ISource)])
 
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
+alsoProvides(SourceTypeVocabulary, IVocabularyFactory)

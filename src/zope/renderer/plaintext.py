@@ -18,13 +18,13 @@ __docformat__ = 'restructuredtext'
 import cgi
 
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
-from zope.app.renderer.i18n import ZopeMessageFactory as _
-from zope.app.renderer.interfaces import ISource, IHTMLRenderer
-from zope.app.renderer import SourceFactory
+from zope.renderer.i18n import ZopeMessageFactory as _
+from zope.renderer.interfaces import ISource, IHTMLRenderer
+from zope.renderer import SourceFactory
 
 class IPlainTextSource(ISource):
     """Marker interface for a plain text source. Note that an implementation
@@ -35,6 +35,7 @@ PlainTextSourceFactory = SourceFactory(
     IPlainTextSource, _("Plain Text"), _("Plain Text Source"))
 
 
+@implementer(IHTMLRenderer)
 class PlainTextToHTMLRenderer(BrowserView):
     r"""A view to convert from Plain Text to HTML.
 
@@ -46,7 +47,6 @@ class PlainTextToHTMLRenderer(BrowserView):
       >>> renderer.render()
       u'I hear that 1 &gt; 2.<br />\n'
     """
-    implements(IHTMLRenderer)
     adapts(IPlainTextSource, IBrowserRequest)
 
     def render(self):

@@ -14,16 +14,16 @@
 """Plain Text Renderer Classes
 """
 from zope.component.interfaces import IFactory
-from zope.interface import implements, directlyProvides, Declaration
-
+from zope.interface import implementer, directlyProvides, Declaration
+from zope.renderer._compat import unicode
 
 class Source(unicode):
     __provides__ = None
 
 
+@implementer(IFactory)
 class SourceFactory(object):
     """Creates an ISource object."""
-    implements(IFactory)
 
     def __init__(self, iface, title='', description=''):
         self._iface = iface

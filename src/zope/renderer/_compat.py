@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2002 Zope Foundation and Contributors.
+# Copyright (c) 2003 Zope Foundation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,17 +11,16 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Vocabulary for the Source Type Registry
+"""Python versions compatibility
 """
-import zope.component
-from zope.interface import alsoProvides
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
-from zope.schema.interfaces import IVocabularyFactory
-from zope.app.renderer.interfaces import ISource
+import sys
 
-def SourceTypeVocabulary(context):
-    return SimpleVocabulary(
-        [SimpleTerm(name, title=factory.title) for name, factory in 
-         zope.component.getFactoriesFor(ISource)])
+PY3 = sys.version_info[0] >= 3
 
-alsoProvides(SourceTypeVocabulary, IVocabularyFactory)
+if PY3:
+
+    unicode = str
+
+else:
+
+    unicode = unicode

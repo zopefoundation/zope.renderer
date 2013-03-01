@@ -18,13 +18,13 @@ __docformat__ = 'restructuredtext'
 import docutils.core
 
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
-from zope.app.renderer.i18n import ZopeMessageFactory as _
-from zope.app.renderer.interfaces import ISource, IHTMLRenderer
-from zope.app.renderer import SourceFactory
+from zope.renderer.i18n import ZopeMessageFactory as _
+from zope.renderer.interfaces import ISource, IHTMLRenderer
+from zope.renderer import SourceFactory
 
 
 class IReStructuredTextSource(ISource):
@@ -37,6 +37,7 @@ ReStructuredTextSourceFactory = SourceFactory(
     IReStructuredTextSource, _("ReStructured Text (ReST)"),
     _("ReStructured Text (ReST) Source"))
 
+@implementer(IHTMLRenderer)
 class ReStructuredTextToHTMLRenderer(BrowserView):
     r"""An Adapter to convert from Restructured Text to HTML.
 
@@ -51,16 +52,13 @@ class ReStructuredTextToHTMLRenderer(BrowserView):
       ... This is more source.
       ... ''')
       >>> renderer = ReStructuredTextToHTMLRenderer(source, TestRequest())
-      >>> print renderer.render().strip()
+      >>> print(renderer.render().strip())
       <p>This is source.</p>
       <div class="section" id="header-3">
       <h3>Header 3</h3>
       <p>This is more source.</p>
       </div>
     """
-
-
-    implements(IHTMLRenderer)
     adapts(IReStructuredTextSource, IBrowserRequest)
 
     def render(self, settings_overrides={}):
@@ -69,9 +67,9 @@ class ReStructuredTextToHTMLRenderer(BrowserView):
         Let's make sure that inputted unicode stays as unicode:
 
         >>> renderer = ReStructuredTextToHTMLRenderer(u'b\xc3h', None)
-        >>> repr(renderer.render())
-        "u'<p>b\\\\xc3h</p>\\\\n'"
-        
+        >>> renderer.render() == u'<p>b\\xc3h</p>\\n'
+        True
+
         >>> text = u'''
         ... =========
         ... Heading 1
@@ -81,10 +79,10 @@ class ReStructuredTextToHTMLRenderer(BrowserView):
         ...
         ... Heading 2
         ... ========='''
-        >>> overrides = {'initial_header_level': 2, 
+        >>> overrides = {'initial_header_level': 2,
         ...              'doctitle_xform': 0 }
         >>> renderer = ReStructuredTextToHTMLRenderer(text, None)
-        >>> print renderer.render(overrides)
+        >>> print(renderer.render(overrides))
         <div class="section" id="heading-1">
         <h2>Heading 1</h2>
         <p>hello world</p>
@@ -107,4 +105,5 @@ class ReStructuredTextToHTMLRenderer(BrowserView):
             writer_name='html',
             settings_overrides=overrides,
             )
-        return u''.join((parts['body_pre_docinfo'], parts['docinfo'], parts['body']))
+        return u''.join(
+            (parts['body_pre_docinfo'], parts['docinfo'], parts['body']))

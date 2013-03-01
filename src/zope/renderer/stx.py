@@ -18,15 +18,15 @@ __docformat__ = 'restructuredtext'
 import re
 
 from zope.component import adapts
-from zope.interface import implements
+from zope.interface import implementer
 from zope.structuredtext.document import Document
 from zope.structuredtext.html import HTML
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
 
-from zope.app.renderer.i18n import ZopeMessageFactory as _
-from zope.app.renderer.interfaces import ISource, IHTMLRenderer
-from zope.app.renderer import SourceFactory
+from zope.renderer.i18n import ZopeMessageFactory as _
+from zope.renderer.interfaces import ISource, IHTMLRenderer
+from zope.renderer import SourceFactory
 
 
 class IStructuredTextSource(ISource):
@@ -39,6 +39,7 @@ StructuredTextSourceFactory = SourceFactory(
     _("Structured Text (STX) Source"))
 
 
+@implementer(IHTMLRenderer)
 class StructuredTextToHTMLRenderer(BrowserView):
     r"""A view to convert from Plain Text to HTML.
 
@@ -57,17 +58,15 @@ class StructuredTextToHTMLRenderer(BrowserView):
       >>> renderer.render()
       u'<p>This is \xc3\x9c.</p>\n'
     """
-    implements(IHTMLRenderer)
     adapts(IStructuredTextSource, IBrowserRequest)
 
     def render(self):
         "See zope.app.interfaces.renderer.IHTMLRenderer"
-        encoded = self.context.encode('UTF-8')
-        doc = Document()(encoded)
+        doc = Document()(self.context)
         html = HTML()(doc)
 
         # strip html & body added by some zope versions
         html = re.sub(
             r'(?sm)^<html.*<body.*?>\n(.*)</body>\n</html>\n',r'\1', html)
 
-        return html.decode('UTF-8')
+        return html
