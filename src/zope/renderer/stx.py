@@ -34,6 +34,7 @@ class IStructuredTextSource(ISource):
     implementation of this interface should always derive from unicode or
     behave like a unicode class."""
 
+
 StructuredTextSourceFactory = SourceFactory(
     IStructuredTextSource, _("Structured Text (STX)"),
     _("Structured Text (STX) Source"))
@@ -67,6 +68,6 @@ class StructuredTextToHTMLRenderer(BrowserView):
 
         # strip html & body added by some zope versions
         html = re.sub(
-            r'(?sm)^<html.*<body.*?>\n(.*)</body>\n</html>\n',r'\1', html)
+            r'(?sm)^<html.*<body.*?>\n(.*)</body>\n</html>\n', r'\1', html)
 
         return html

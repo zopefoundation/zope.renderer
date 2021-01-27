@@ -18,9 +18,6 @@ import sys
 PY3 = sys.version_info[0] >= 3
 
 if PY3:
-
-    unicode = str
-
+    unicode = str  # pragma: PY3
 else:
-
-    unicode = unicode
+    unicode = unicode  # pragma: PY2

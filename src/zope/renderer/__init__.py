@@ -17,6 +17,7 @@ from zope.component.interfaces import IFactory
 from zope.interface import implementer, directlyProvides, Declaration
 from zope.renderer._compat import unicode
 
+
 class Source(unicode):
     __provides__ = None
 

@@ -31,22 +31,27 @@ checker = renormalizing.RENormalizing([
      r"\1"),
     (re.compile('u(".*?")'),
      r"\1"),
-    ])
+])
 
 
 class IFoo(ISource):
     """Source marker interface"""
 
+
 FooFactory = SourceFactory(IFoo, 'Foo', 'Foo Source')
+
 
 class IFoo2(ISource):
     """Source marker interface"""
+
 
 Foo2Factory = SourceFactory(IFoo2, 'Foo2', 'Foo2 Source')
 
 # The vocabulary uses SimpleVocabulary now, so these tests are a bit
 # redundant.  Leaving them in as confirmation that the replacement function
 # works identically to the old custom vocabulary.
+
+
 class SourceTypeVocabularyTest(unittest.TestCase):
 
     def setUp(self):
@@ -59,18 +64,18 @@ class SourceTypeVocabularyTest(unittest.TestCase):
         testing.tearDown()
 
     def test_Interface(self):
-        self.failUnless(IVocabulary.providedBy(self.vocab))
-        self.failUnless(IVocabularyTokenized.providedBy(self.vocab))
+        self.assertTrue(IVocabulary.providedBy(self.vocab))
+        self.assertTrue(IVocabularyTokenized.providedBy(self.vocab))
 
     def test_contains(self):
-        self.failUnless('zope.source.Foo' in self.vocab)
-        self.failIf('zope.source.Foo3' in self.vocab)
+        self.assertIn('zope.source.Foo', self.vocab)
+        self.assertNotIn('zope.source.Foo3', self.vocab)
 
     def test_iter(self):
-        self.failUnless(
-            'zope.source.Foo' in [term.value for term in self.vocab])
-        self.failIf(
-            'zope.source.Foo3' in [term.value for term in iter(self.vocab)])
+        self.assertIn(
+            'zope.source.Foo', [term.value for term in self.vocab])
+        self.assertNotIn(
+            'zope.source.Foo3', [term.value for term in iter(self.vocab)])
 
     def test_len(self):
         self.assertEqual(len(self.vocab), 2)
@@ -86,13 +91,11 @@ class SourceTypeVocabularyTest(unittest.TestCase):
         self.assertRaises(
             LookupError, vocab.getTermByToken, ('zope.source.Foo3',))
 
+
 def test_suite():
     return unittest.TestSuite((
         unittest.makeSuite(SourceTypeVocabularyTest),
         doctest.DocTestSuite('zope.renderer.plaintext', checker=checker),
         doctest.DocTestSuite('zope.renderer.rest', checker=checker),
         doctest.DocTestSuite('zope.renderer.stx', checker=checker),
-        ))
-
-if __name__ == '__main__':
-    unittest.main()
+    ))
