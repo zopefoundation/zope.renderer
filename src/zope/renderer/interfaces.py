@@ -14,7 +14,7 @@
 """Renderer Interface Declarations
 
 The source renderer takes a special type of string, an ISource, and is able to
-produce
+produce an output in a different format.
 """
 from zope.interface import Interface
 
