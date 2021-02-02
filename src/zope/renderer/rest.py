@@ -37,6 +37,7 @@ ReStructuredTextSourceFactory = SourceFactory(
     IReStructuredTextSource, _("ReStructured Text (ReST)"),
     _("ReStructured Text (ReST) Source"))
 
+
 @implementer(IHTMLRenderer)
 class ReStructuredTextToHTMLRenderer(BrowserView):
     r"""An Adapter to convert from Restructured Text to HTML.
@@ -98,12 +99,12 @@ class ReStructuredTextToHTMLRenderer(BrowserView):
             'input_encoding': 'unicode',
             'output_encoding': 'unicode',
             'initial_header_level': 3,
-            }
+        }
         overrides.update(settings_overrides)
         parts = docutils.core.publish_parts(
             self.context,
             writer_name='html',
             settings_overrides=overrides,
-            )
+        )
         return u''.join(
             (parts['body_pre_docinfo'], parts['docinfo'], parts['body']))

@@ -19,9 +19,11 @@ from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.schema.interfaces import IVocabularyFactory
 from zope.renderer.interfaces import ISource
 
+
 def SourceTypeVocabulary(context):
     return SimpleVocabulary(
-        [SimpleTerm(name, title=factory.title) for name, factory in 
+        [SimpleTerm(name, title=factory.title) for name, factory in
          zope.component.getFactoriesFor(ISource)])
+
 
 alsoProvides(SourceTypeVocabulary, IVocabularyFactory)

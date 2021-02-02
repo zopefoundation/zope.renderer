@@ -15,7 +15,6 @@
 """
 __docformat__ = 'restructuredtext'
 
-import cgi
 
 from zope.component import adapts
 from zope.interface import implementer
@@ -26,10 +25,17 @@ from zope.renderer.i18n import ZopeMessageFactory as _
 from zope.renderer.interfaces import ISource, IHTMLRenderer
 from zope.renderer import SourceFactory
 
+try:
+    from html import escape  # pragma: PY3
+except ImportError:
+    from cgi import escape  # pragma: PY2
+
+
 class IPlainTextSource(ISource):
     """Marker interface for a plain text source. Note that an implementation
     of this interface should always derive from unicode or behave like a
     unicode class."""
+
 
 PlainTextSourceFactory = SourceFactory(
     IPlainTextSource, _("Plain Text"), _("Plain Text Source"))
@@ -51,4 +57,4 @@ class PlainTextToHTMLRenderer(BrowserView):
 
     def render(self):
         "See zope.app.interfaces.renderer.IHTMLRenderer"
-        return cgi.escape(self.context).replace('\n', '<br />\n')
+        return escape(self.context).replace('\n', '<br />\n')
