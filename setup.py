@@ -62,7 +62,10 @@ setup(name='zope.renderer',
       package_dir={'': 'src'},
       namespace_packages=['zope'],
       extras_require=dict(
-          test=['zope.testing']
+          test=[
+              'zope.testing',
+              'zope.testrunner',
+          ]
       ),
       install_requires=[
           'setuptools',
