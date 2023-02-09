@@ -17,13 +17,17 @@ import doctest
 import re
 import unittest
 
+from zope.component import provideUtility
+from zope.component import testing
+from zope.component.interfaces import IFactory
+from zope.schema.interfaces import IVocabulary
+from zope.schema.interfaces import IVocabularyTokenized
+from zope.testing import renormalizing
+
 from zope.renderer import SourceFactory
 from zope.renderer.interfaces import ISource
 from zope.renderer.vocabulary import SourceTypeVocabulary
-from zope.component import testing, provideUtility
-from zope.component.interfaces import IFactory
-from zope.schema.interfaces import IVocabulary, IVocabularyTokenized
-from zope.testing import renormalizing
+
 
 checker = renormalizing.RENormalizing([
     # Python 3 unicode removed the "u".

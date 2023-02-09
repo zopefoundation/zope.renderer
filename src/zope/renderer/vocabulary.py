@@ -15,8 +15,10 @@
 """
 import zope.component
 from zope.interface import alsoProvides
-from zope.schema.vocabulary import SimpleVocabulary, SimpleTerm
 from zope.schema.interfaces import IVocabularyFactory
+from zope.schema.vocabulary import SimpleTerm
+from zope.schema.vocabulary import SimpleVocabulary
+
 from zope.renderer.interfaces import ISource
 
 

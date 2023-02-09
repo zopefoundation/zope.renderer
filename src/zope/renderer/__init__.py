@@ -14,7 +14,10 @@
 """Plain Text Renderer Classes
 """
 from zope.component.interfaces import IFactory
-from zope.interface import implementer, directlyProvides, Declaration
+from zope.interface import Declaration
+from zope.interface import directlyProvides
+from zope.interface import implementer
+
 from zope.renderer._compat import unicode
 
 
