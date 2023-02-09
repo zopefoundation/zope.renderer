@@ -48,17 +48,17 @@ class StructuredTextToHTMLRenderer(BrowserView):
     Example::
 
       >>> from zope.publisher.browser import TestRequest
-      >>> source = StructuredTextSourceFactory(u'This is source.')
+      >>> source = StructuredTextSourceFactory('This is source.')
       >>> renderer = StructuredTextToHTMLRenderer(source, TestRequest())
       >>> renderer.render()
-      u'<p>This is source.</p>\n'
+      '<p>This is source.</p>\n'
 
     Make sure that unicode works as well::
 
-      >>> source = StructuredTextSourceFactory(u'This is \xc3\x9c.')
+      >>> source = StructuredTextSourceFactory('This is \xc3\x9c.')
       >>> renderer = StructuredTextToHTMLRenderer(source, TestRequest())
       >>> renderer.render()
-      u'<p>This is \xc3\x9c.</p>\n'
+      '<p>This is \xc3\x9c.</p>\n'
     """
     adapts(IStructuredTextSource, IBrowserRequest)
 

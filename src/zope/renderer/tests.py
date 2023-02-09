@@ -14,7 +14,6 @@
 """Tests for Renderer Vocabulary.
 """
 import doctest
-import re
 import unittest
 
 from zope.component import provideUtility
@@ -22,20 +21,10 @@ from zope.component import testing
 from zope.component.interfaces import IFactory
 from zope.schema.interfaces import IVocabulary
 from zope.schema.interfaces import IVocabularyTokenized
-from zope.testing import renormalizing
 
 from zope.renderer import SourceFactory
 from zope.renderer.interfaces import ISource
 from zope.renderer.vocabulary import SourceTypeVocabulary
-
-
-checker = renormalizing.RENormalizing([
-    # Python 3 unicode removed the "u".
-    (re.compile("u('.*?')"),
-     r"\1"),
-    (re.compile('u(".*?")'),
-     r"\1"),
-])
 
 
 class IFoo(ISource):
@@ -98,8 +87,9 @@ class SourceTypeVocabularyTest(unittest.TestCase):
 
 def test_suite():
     return unittest.TestSuite((
-        unittest.makeSuite(SourceTypeVocabularyTest),
-        doctest.DocTestSuite('zope.renderer.plaintext', checker=checker),
-        doctest.DocTestSuite('zope.renderer.rest', checker=checker),
-        doctest.DocTestSuite('zope.renderer.stx', checker=checker),
+        unittest.defaultTestLoader.loadTestsFromTestCase(
+            SourceTypeVocabularyTest),
+        doctest.DocTestSuite('zope.renderer.plaintext'),
+        doctest.DocTestSuite('zope.renderer.rest'),
+        doctest.DocTestSuite('zope.renderer.stx'),
     ))

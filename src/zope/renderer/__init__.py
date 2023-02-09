@@ -18,15 +18,13 @@ from zope.interface import Declaration
 from zope.interface import directlyProvides
 from zope.interface import implementer
 
-from zope.renderer._compat import unicode
 
-
-class Source(unicode):
+class Source(str):
     __provides__ = None
 
 
 @implementer(IFactory)
-class SourceFactory(object):
+class SourceFactory:
     """Creates an ISource object."""
 
     def __init__(self, iface, title='', description=''):

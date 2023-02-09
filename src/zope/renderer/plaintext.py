@@ -16,6 +16,8 @@
 __docformat__ = 'restructuredtext'
 
 
+import html
+
 from zope.component import adapts
 from zope.interface import implementer
 from zope.publisher.browser import BrowserView
@@ -25,12 +27,6 @@ from zope.renderer import SourceFactory
 from zope.renderer.i18n import ZopeMessageFactory as _
 from zope.renderer.interfaces import IHTMLRenderer
 from zope.renderer.interfaces import ISource
-
-
-try:
-    from html import escape  # pragma: PY3
-except ImportError:
-    from cgi import escape  # pragma: PY2
 
 
 class IPlainTextSource(ISource):
@@ -50,13 +46,13 @@ class PlainTextToHTMLRenderer(BrowserView):
     Example::
 
       >>> from zope.publisher.browser import TestRequest
-      >>> source = PlainTextSourceFactory(u'I hear that 1 > 2.\n')
+      >>> source = PlainTextSourceFactory('I hear that 1 > 2.\n')
       >>> renderer = PlainTextToHTMLRenderer(source, TestRequest())
       >>> renderer.render()
-      u'I hear that 1 &gt; 2.<br />\n'
+      'I hear that 1 &gt; 2.<br />\n'
     """
     adapts(IPlainTextSource, IBrowserRequest)
 
     def render(self):
         "See zope.app.interfaces.renderer.IHTMLRenderer"
-        return escape(self.context).replace('\n', '<br />\n')
+        return html.escape(self.context).replace('\n', '<br />\n')
