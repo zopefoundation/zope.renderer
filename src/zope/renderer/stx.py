@@ -19,14 +19,15 @@ import re
 
 from zope.component import adapts
 from zope.interface import implementer
-from zope.structuredtext.document import Document
-from zope.structuredtext.html import HTML
 from zope.publisher.browser import BrowserView
 from zope.publisher.interfaces.browser import IBrowserRequest
+from zope.structuredtext.document import Document
+from zope.structuredtext.html import HTML
 
-from zope.renderer.i18n import ZopeMessageFactory as _
-from zope.renderer.interfaces import ISource, IHTMLRenderer
 from zope.renderer import SourceFactory
+from zope.renderer.i18n import ZopeMessageFactory as _
+from zope.renderer.interfaces import IHTMLRenderer
+from zope.renderer.interfaces import ISource
 
 
 class IStructuredTextSource(ISource):
@@ -47,17 +48,17 @@ class StructuredTextToHTMLRenderer(BrowserView):
     Example::
 
       >>> from zope.publisher.browser import TestRequest
-      >>> source = StructuredTextSourceFactory(u'This is source.')
+      >>> source = StructuredTextSourceFactory('This is source.')
       >>> renderer = StructuredTextToHTMLRenderer(source, TestRequest())
       >>> renderer.render()
-      u'<p>This is source.</p>\n'
+      '<p>This is source.</p>\n'
 
     Make sure that unicode works as well::
 
-      >>> source = StructuredTextSourceFactory(u'This is \xc3\x9c.')
+      >>> source = StructuredTextSourceFactory('This is \xc3\x9c.')
       >>> renderer = StructuredTextToHTMLRenderer(source, TestRequest())
       >>> renderer.render()
-      u'<p>This is \xc3\x9c.</p>\n'
+      '<p>This is \xc3\x9c.</p>\n'
     """
     adapts(IStructuredTextSource, IBrowserRequest)
 
